@@ -3,7 +3,7 @@ import langchain_chroma as chromaDB
 
 class GooglePalmEmbeddings:
     def __init__(self):
-        API_KEY = "AIzaSyABaEnflvVQD1TCxCWKDoomIM63jLHrdcs"
+        API_KEY = "your_api_key"
         self.client = genai.Client(api_key=API_KEY)
         
     def embed_documents(self, documents):
@@ -54,10 +54,10 @@ class ChromaDB:
 # from processDocument import load_file_and_split, createChunkID
 
 # # Loading the file and splitting it into chunks
-# split_docs = load_file_and_split(r"./assets/merged_resume.pdf")
+# split_docs = load_file_and_split(r"./assets/name_of_the_document.pdf")
 # chunks = createChunkID(split_docs)
 
 # addEmbeddings_to_Chroma(chunks)
 
-# observeDB("merged_resume")
+# observeDB("name_of_the_document")
 # ========================================================= #

@@ -1,6 +1,6 @@
 from google import genai
 from pprint import pprint
-API_KEY = "AIzaSyABaEnflvVQD1TCxCWKDoomIM63jLHrdcs"
+API_KEY = "your_api_key"
 
 # Create a client
 client = genai.Client(api_key=API_KEY)

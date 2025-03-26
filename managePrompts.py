@@ -5,7 +5,7 @@ from pprint import pprint
 import time
 
 def generatingResponse(prompt):
-    API_KEY = "AIzaSyABaEnflvVQD1TCxCWKDoomIM63jLHrdcs"
+    API_KEY = "your_api_key"
     client = genai.Client(api_key=API_KEY)
     
     chunk = client.models.generate_content(model='gemini-2.0-flash-001', 
@@ -33,7 +33,7 @@ def creatingQuery(queryText, base):
 
 
 # ======================= Test ============================= #
-# document = "GSoC Projects.pdf"
+# document = "name_of_the_document.pdf"
 # from populateDatabase import ChromaDB, GooglePalmEmbeddings
 # from processDocument import load_file_and_split, createChunkID
 
