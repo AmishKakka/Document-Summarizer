@@ -1,4 +1,5 @@
 from google import genai
+from google.genai import types
 import langchain_chroma as chromaDB
 
 class GooglePalmEmbeddings:
@@ -9,13 +10,15 @@ class GooglePalmEmbeddings:
     def embed_documents(self, documents):
         embeddings = (self.client.models.embed_content(
                 model="models/text-embedding-004", 
-                contents=documents))
+                contents=documents,
+                config=types.EmbedContentConfig(task_type='retrieval_document')))
         return [e.values for e in embeddings.embeddings]
         
     def embed_query(self, text):
         embeddings = self.client.models.embed_content(
             model="models/text-embedding-004", 
-            contents=text)
+            contents=text,
+            config=types.EmbedContentConfig(task_type='retrieval_query'))
         return embeddings.embeddings[0].values
 
 
