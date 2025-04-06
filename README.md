@@ -6,6 +6,8 @@
 
 > **Note**: You would need an API key to run this successfully. This can be done from your Google Cloud account.
 
+![Application page](interface.png "Application page")
+
 # **Installation**  
 
 1. Cloning the repository first.
@@ -21,7 +23,7 @@ source env_name/bin/activate
 pip install -r requirements.txt
 ```
 
-3. You need to change the value of 'API_KEY' variable in 3 files - managePrompts.py, populateDatabse.py, searchingModel.py files. I will change this so that, user enters the 'API_KEY' in the application itself.
+3. You need to change the value of 'API_KEY' variable in 3 files - main.py, populateDatabse.py, searchingModel.py files. I will change this so that, user enters the 'API_KEY' in the application itself.
 
 3. Run main.py to access the application in your browser. 
 ```sh
@@ -31,3 +33,4 @@ python3 main.py
 # **Pointers** 
 1. The idea was to implement Retreival-Augmented Generation (RAG) and the power of LLMs to generate relevant text.
 2. To store the embeddings of the documents, ChromaDB is used and accessed using the LangChain library.
+3. You can upload only 1 document at a time.
