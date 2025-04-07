@@ -5,7 +5,7 @@ from pprint import pprint
 
 class GooglePalmEmbeddings:
     def __init__(self):
-        API_KEY = "AIzaSyABaEnflvVQD1TCxCWKDoomIM63jLHrdcs"
+        API_KEY = "your_api_key"
         self.client = genai.Client(api_key=API_KEY)
         
     def embed_documents(self, documents):
