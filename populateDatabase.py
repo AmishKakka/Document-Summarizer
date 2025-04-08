@@ -63,8 +63,8 @@ class ChromaDB:
 
 # chunks = chunks1 + chunks2
 # print("Number of chunks: \n", len(chunks))
-
-# # Creating the embeddings and adding them to the ChromaDB
+# print(chunks[0])
+# Creating the embeddings and adding them to the ChromaDB
 # db = ChromaDB(GooglePalmEmbeddings())
 
 # for i in range(0, len(chunks), 100):

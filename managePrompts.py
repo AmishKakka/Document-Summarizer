@@ -5,7 +5,7 @@ from pprint import pprint
 import time
 
 
-def creatingQuery(queryText, base=""):
+def creatingQuery(queryText):
     PROMPT_TEMPLATE = '''
     Answer the question - {question}
     ----
@@ -14,8 +14,8 @@ def creatingQuery(queryText, base=""):
     '''
     
     from populateDatabase import GooglePalmEmbeddings
-    db = chromaDB.Chroma(persist_directory=f'vectorData/{base}', embedding_function=GooglePalmEmbeddings())
-    results = db.similarity_search_with_score(queryText, k=7)
+    db = chromaDB.Chroma(persist_directory=f'vectorData/', embedding_function=GooglePalmEmbeddings())
+    results = db.similarity_search_with_score(queryText, k=10)
     # pprint(results)
     contextText = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
     
@@ -26,7 +26,7 @@ def creatingQuery(queryText, base=""):
 
 
 # ======================= Test ============================= #
-# document = "Assignment4_CS565.pdf"
+# document = "your_document.pdf"
 # from populateDatabase import ChromaDB, GooglePalmEmbeddings
 # from processDocument import load_file_and_split, createChunkID
 

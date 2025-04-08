@@ -1,4 +1,4 @@
-# Document-Summarizer v1.0
+# Document-Summarizer v1.1
 
 **Goal**: It is simple, upload your document in PDF format (will work on changing this later) and then query it. Get a summary of any number of words, or get detailed understanding of only a portion of the document.
 
@@ -31,6 +31,6 @@ python3 main.py
 ```
 
 # **Pointers** 
-1. The idea was to implement Retreival-Augmented Generation (RAG) and the power of LLMs to generate relevant text.
+1. The idea is to implement Retreival-Augmented Generation (RAG) and the power of LLMs to generate relevant text.
 2. To store the embeddings of the documents, ChromaDB is used and accessed using the LangChain library.
-3. You can upload only 1 document at a time.
+3. You can upload only mutiple document at a time and query any document.
