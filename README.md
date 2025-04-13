@@ -1,4 +1,4 @@
-# Document-Summarizer v1.1
+# Document-Summarizer v1.2
 
 **Goal**: It is simple, upload your document in PDF format (will work on changing this later) and then query it. Get a summary of any number of words, or get detailed understanding of only a portion of the document.
 
@@ -23,8 +23,6 @@ source env_name/bin/activate
 pip install -r requirements.txt
 ```
 
-3. You need to change the value of 'API_KEY' variable in 3 files - main.py, populateDatabse.py, searchingModel.py files. I will change this so that, user enters the 'API_KEY' in the application itself.
-
 3. Run main.py to access the application in your browser. 
 ```sh
 python3 main.py
@@ -33,4 +31,4 @@ python3 main.py
 # **Pointers** 
 1. The idea is to implement Retreival-Augmented Generation (RAG) and the power of LLMs to generate relevant text.
 2. To store the embeddings of the documents, ChromaDB is used and accessed using the LangChain library.
-3. You can upload only mutiple document at a time and query any document.
+3. You can upload only mutiple documents at a time and query any document.
