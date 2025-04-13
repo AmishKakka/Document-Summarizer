@@ -9,13 +9,12 @@ def creatingQuery(queryText):
     PROMPT_TEMPLATE = '''
     Answer the question - {question}
     ----
-    Now, if there is not document attached, forget about the context and answer the question based on your knowledge.
-    If there is a document attached then your answer must be based on the following context - {context}
+    Now, your answer must be based on the following context and also gather information from the internet related to - {context}
     '''
     
     from populateDatabase import GooglePalmEmbeddings
     db = chromaDB.Chroma(persist_directory=f'vectorData/', embedding_function=GooglePalmEmbeddings())
-    results = db.similarity_search_with_score(queryText, k=10)
+    results = db.similarity_search_with_score(queryText, k=5)
     # pprint(results)
     contextText = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
     

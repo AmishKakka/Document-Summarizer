@@ -2,11 +2,11 @@ from google import genai
 from google.genai import types
 import langchain_chroma as chromaDB
 from pprint import pprint
+import config
 
 class GooglePalmEmbeddings:
     def __init__(self):
-        API_KEY = "your_api_key"
-        self.client = genai.Client(api_key=API_KEY)
+        self.client = genai.Client(api_key=config.API_KEY)
         
     def embed_documents(self, documents):
         embeddings = (self.client.models.embed_content(
@@ -49,22 +49,29 @@ class ChromaDB:
             
     def observeDB(self):
         print("Document IDs of embeddings in database: ", self.vector_db.get(include=[])["ids"])
+        
+    def deleteEmbeddings(self, filename):
+        ids = self.vector_db.get(include=[])["ids"]
+        to_delete = [id for id in ids if filename in id]
+        self.vector_db.delete(to_delete)
+        print(f"Deleted {filename} embeddings from ChromaDB.")
     
     
 # ======================= Test ============================= #
 # from processDocument import load_file_and_split, createChunkID
-
+# config.API_KEY = "your_api_key"
 # # Loading the file and splitting it into chunks
 # split_docs = load_file_and_split(r"./assets/AttentionPaper.pdf")
 # chunks1 = createChunkID(split_docs)
 
-# split_docs = load_file_and_split(r"./assets/other_document.pdf")
+# split_docs = load_file_and_split(r"./assets/Cover letter.pdf")
 # chunks2 = createChunkID(split_docs)
 
 # chunks = chunks1 + chunks2
 # print("Number of chunks: \n", len(chunks))
-# print(chunks[0])
-# Creating the embeddings and adding them to the ChromaDB
+# # print(chunks[0])
+
+# # Creating the embeddings and adding them to the ChromaDB
 # db = ChromaDB(GooglePalmEmbeddings())
 
 # for i in range(0, len(chunks), 100):
@@ -72,4 +79,7 @@ class ChromaDB:
 #     db.addEmbeddings_to_Chroma(chunks[i:i+100])
 
 # db.observeDB()
-# ========================================================= #
+
+# db.deleteEmbeddings("AttentionPaper.pdf")
+# db.deleteEmbeddings("Cover letter.pdf")
+# db.observeDB()
