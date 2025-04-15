@@ -6,5 +6,5 @@
 API_KEY = ""
 session = ""
 filesinput = set()
-history = []
 ChromaDB = None
+chat_client = None

@@ -1,7 +1,6 @@
 from google import genai
 from google.genai import types
 import langchain_chroma as chromaDB
-from pprint import pprint
 import config
 
 class GooglePalmEmbeddings:
@@ -25,7 +24,8 @@ class GooglePalmEmbeddings:
 
 class ChromaDB:
     def __init__(self, embeddingFunction):
-        self.vector_db = chromaDB.Chroma(persist_directory=f'vectorData/', 
+        print(config.session)
+        self.vector_db = chromaDB.Chroma(persist_directory=f'{str(config.session)}/vectorData', 
                                 embedding_function=embeddingFunction)
 
     def addEmbeddings_to_Chroma(self, chunks):
@@ -59,7 +59,7 @@ class ChromaDB:
     
 # ======================= Test ============================= #
 # from processDocument import load_file_and_split, createChunkID
-# config.API_KEY = "your_api_key"
+# config.API_KEY = "AIzaSyBt3F8mpQyWPKkvvPzN-sPi-4tMJbPmgSk"
 # # Loading the file and splitting it into chunks
 # split_docs = load_file_and_split(r"./assets/AttentionPaper.pdf")
 # chunks1 = createChunkID(split_docs)
