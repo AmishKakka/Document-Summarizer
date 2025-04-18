@@ -59,8 +59,12 @@ class ChromaDB:
     
 # ======================= Test ============================= #
 # from processDocument import load_file_and_split, createChunkID
+<<<<<<< HEAD
 # config.API_KEY = "your_api_key_here"
 
+=======
+# config.API_KEY = "your_api_key"
+>>>>>>> refs/remotes/origin/main
 # # Loading the file and splitting it into chunks
 # split_docs = load_file_and_split(r"./assets/AttentionPaper.pdf")
 # chunks1 = createChunkID(split_docs)
