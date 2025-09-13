@@ -7,10 +7,10 @@
 > **Note**: You would need an API key to run this successfully. This can be done from your Google Cloud account.
 
 Uploading document and then querying.
-![Application page](interface1.png "Document uploaded and querying.")
+![Application page](./imgs/interface1.png "Document uploaded and querying.")
 
 No document uploaded and then querying.
-![Application page](interface2.png "No document uploaded and then querying.")
+![Application page](./imgs/interface2.png "No document uploaded and then querying.")
 
 # **Installation**  
 

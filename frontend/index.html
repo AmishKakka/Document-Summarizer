@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Summarizer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1>Document Summarizer</h1>
+    </header>
+
+    <main class="container">
+        <section class="chatbot-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <span>Please upload one or more documents to begin.</span>
+                </div>
+            </div>
+            <form class="chat-input-form" id="chatForm">
+                <input type="text" id="userInput" placeholder="Ask a question..." autocomplete="on" required>
+                <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+        </section>
+
+        <aside class="sidebar-container">
+            <div class="upload-container">
+                <h2><i class="fa-solid fa-file-arrow-up"></i> Upload Documents</h2>
+                <label for="fileInput" class="upload-label">
+                    Choose Files
+                </label>
+                <input type="file" id="fileInput" multiple hidden>
+                <div class="file-list" id="fileList">
+                    </div>
+            </div>
+        </aside>
+    </main>
+
+    <div class="spinner-overlay" id="spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

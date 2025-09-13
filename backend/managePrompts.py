@@ -1,6 +1,6 @@
 from langchain.prompts import ChatPromptTemplate
 import langchain_chroma as chromaDB
-import config
+import backend.config as config
 
 def creatingQuery(queryText):
     PROMPT_TEMPLATE = '''
