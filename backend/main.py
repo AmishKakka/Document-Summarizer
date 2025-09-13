@@ -3,6 +3,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import os
+from backend.configs import API_KEY
+from google import genai
 from backend.processDocument import load_file_and_split, createChunkID
 from backend.managePrompts import creatingQuery
 from backend.populateDatabase import ChromaDB, GooglePalmEmbeddings
@@ -48,7 +50,12 @@ async def handle_upload(file: UploadFile = File(...)):
 async def handle_chat(request: ChatRequest):
     # This endpoint receives a JSON question creates a prompt and sends the it to the model for a response.
     prompt = creatingQuery(request.question)
-    return {"answer": prompt}
+    client = genai.Client(api_key=API_KEY)
+    model_output = ""
+    for next_text in client.models.generate_content_stream(model='gemini-2.0-flash-001', 
+                                                            contents=prompt):
+        model_output += next_text.text
+    return {"answer": model_output}
 
 
 app.mount("/", StaticFiles(directory="frontend", html=True), name="static")

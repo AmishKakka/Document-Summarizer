@@ -1,20 +1,20 @@
 from langchain.prompts import ChatPromptTemplate
-import langchain_chroma as chromaDB
-import backend.config as config
+# import langchain_chroma as chromaDB
+from backend.populateDatabase import ChromaDB, GooglePalmEmbeddings
 
 def creatingQuery(queryText):
     PROMPT_TEMPLATE = '''
     Answer the question - {question}
     ----
-    Now, your answer must be based on the following context and also gather information from the internet related to - {context}
+    Use Markdown for all formatting. For example, use bolding for key terms with **text**, and use bullet points for lists, but don't 
+    mention it in your response. If you include code snippets, use triple backticks to format them properly.
+    Now, your answer must be based on the following context and also gather information from the internet, to find supporting facts 
+    related to - {context}
     '''
-    
-    if config.ChromaDB is None:
-        print("Error: ChromaDB not initialized. Please set API key and upload documents.")
-        return f"Please answer this question: {queryText}. (Note: Document context is unavailable as the database is not ready)."
+    db = ChromaDB(GooglePalmEmbeddings())
 
     try:
-        results = config.ChromaDB.vector_db.similarity_search_with_score(queryText, k=5)
+        results = db.vector_db.similarity_search_with_score(queryText, k=5)
         contextText = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
         if not contextText:
             print("Warning: No relevant context found in documents for the query.")
@@ -41,7 +41,7 @@ def creatingQuery(queryText):
 # chunks = createChunkID(splits)
 
 # # Create and add the embeddings to the ChromaDB
-# db = ChromaDB(document, GooglePalmEmbeddings())
+# db = ChromaDB(GooglePalmEmbeddings())
 # db.addEmbeddings_to_Chroma(chunks)
 # db.observeDB()
 

@@ -1,11 +1,11 @@
 from google import genai
 from google.genai import types
 import langchain_chroma as chromaDB
-import backend.config as config
+import backend.configs as configs
 
 class GooglePalmEmbeddings:
     def __init__(self):
-        self.client = genai.Client(api_key=config.API_KEY)
+        self.client = genai.Client(api_key=configs.API_KEY)
         
     def embed_documents(self, documents):
         embeddings = (self.client.models.embed_content(
@@ -24,7 +24,7 @@ class GooglePalmEmbeddings:
 
 class ChromaDB:
     def __init__(self, embeddingFunction):
-        print(config.session)
+        print(configs.session)
         self.vector_db = chromaDB.Chroma(persist_directory=f'vectorData', 
                                 embedding_function=embeddingFunction)
 
