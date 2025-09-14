@@ -17,13 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const addMessage = (text, sender) => {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', `${sender}-message`);
+
         if (sender === 'bot') {
             messageElement.innerHTML = marked.parse(text);
         } else {
             messageElement.innerHTML = `<span>${text}</span>`;
         }
+        
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+        return messageElement; 
     };
 
     const updateFileListUI = () => {
@@ -67,7 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Event Listeners ---
     fileInput.addEventListener('change', (event) => {
         const files = event.target.files;
         if (files.length > 0) {
@@ -89,7 +91,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!question) return;
 
-        // Check if any files have been uploaded
         if (uploadedFiles.size === 0) {
             addMessage('Please upload a document before asking a question.', 'bot');
             return;
@@ -109,9 +110,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error('Failed to get a response from the bot.');
             }
+            const botMessageBubble = addMessage('', 'bot'); 
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullResponse = '';
 
-            const result = await response.json();
-            addMessage(result.answer, 'bot');
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                fullResponse += decoder.decode(value, {stream: true});
+                botMessageBubble.innerHTML = marked.parse(fullResponse);
+            }
         } catch (error) {
             console.error('Error during chat:', error);
             addMessage('Sorry, something went wrong. Please try again.', 'bot');
@@ -120,14 +129,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Event delegation for delete buttons
-    fileList.addEventListener('click', (event) => {
+    fileList.addEventListener('click', async (event) => {
         if (event.target.classList.contains('delete-btn')) {
             const fileName = event.target.dataset.filename;
-            uploadedFiles.delete(fileName);
-            updateFileListUI();
-            // Optional: Send a request to the backend to delete the document's context
-            // fetch(`${API_BASE_URL}/delete`, { method: 'POST', ... });
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/delete_files`, { 
+                    method: 'DELETE', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ filename: fileName }) 
+                });
+                uploadedFiles.delete(fileName);
+                updateFileListUI();
+                console.log(`Deleted file: ${fileName}`);
+            } catch (error) {
+                console.error(`Error deleting file: ${fileName}`, error);
+            } finally {
+                showSpinner(false);
+            }
         }
     });
 });

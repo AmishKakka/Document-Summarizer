@@ -1,5 +1,5 @@
 from langchain.prompts import ChatPromptTemplate
-# import langchain_chroma as chromaDB
+import langchain_chroma as chromaDB
 from backend.populateDatabase import ChromaDB, GooglePalmEmbeddings
 
 def creatingQuery(queryText):
@@ -10,11 +10,14 @@ def creatingQuery(queryText):
     mention it in your response. If you include code snippets, use triple backticks to format them properly.
     Now, your answer must be based on the following context and also gather information from the internet, to find supporting facts 
     related to - {context}
+    Also, a final note - if you don't know the answer, just say "Hmm, I'm not sure." Don't try to make up an answer. 
+    And the length of the response must be less than 700 words.
     '''
-    db = ChromaDB(GooglePalmEmbeddings())
-
-    try:
-        results = db.vector_db.similarity_search_with_score(queryText, k=5)
+    db = chromaDB.Chroma(persist_directory=f'./vectorData', 
+                         embedding_function=GooglePalmEmbeddings())
+    try:        
+        results = db.similarity_search_with_score(queryText, k=5)
+        print(results)
         contextText = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
         if not contextText:
             print("Warning: No relevant context found in documents for the query.")

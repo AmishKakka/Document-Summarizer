@@ -25,7 +25,7 @@ class GooglePalmEmbeddings:
 class ChromaDB:
     def __init__(self, embeddingFunction):
         print(configs.session)
-        self.vector_db = chromaDB.Chroma(persist_directory=f'vectorData', 
+        self.vector_db = chromaDB.Chroma(persist_directory=f'./vectorData', 
                                 embedding_function=embeddingFunction)
 
     def addEmbeddings_to_Chroma(self, chunks):
@@ -52,9 +52,13 @@ class ChromaDB:
         
     def deleteEmbeddings(self, filename):
         ids = self.vector_db.get(include=[])["ids"]
+        if ids is None or len(ids) == 0:
+            print("No documents in ChromaDB to delete.")
+            return
         to_delete = [id for id in ids if filename in id]
         self.vector_db.delete(to_delete)
         print(f"Deleted {filename} embeddings from ChromaDB.")
+        print(self.vector_db.get(include=[])["ids"])
     
     
 # ======================= Test ============================= #

@@ -1,5 +1,5 @@
-./backend/configs.py
-./DocENV/
-./.DS_Store
-./backend/__pycache__/
+backend/configs.py
+DocENV/
+DS_Store/
+backend/__pycache__/
 .dockerignore

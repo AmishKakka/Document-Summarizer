@@ -14,6 +14,5 @@ COPY ./frontend /app/frontend
 # Expose the port the app will run on
 EXPOSE 8080
 
-# The command to run the Uvicorn server for FastAPI
 # '$PORT' is automatically supplied by services like Cloud Run
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8080"]

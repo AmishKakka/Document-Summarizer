@@ -1,6 +1,8 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse
+import asyncio
 from pydantic import BaseModel
 import os
 from backend.configs import API_KEY
@@ -26,6 +28,10 @@ app.add_middleware(
 class ChatRequest(BaseModel):
     question: str
     # You might also include a session_id here
+
+class DeleteRequest(BaseModel):
+    filename: str
+    
     
 @app.post("/upload")
 async def handle_upload(file: UploadFile = File(...)):
@@ -46,6 +52,12 @@ async def handle_upload(file: UploadFile = File(...)):
         db.observeDB()
         return {"status": "success", "filename": file.filename}
 
+
+async def stream_generator(response: str):
+    for word in response.split():
+        yield word + " "
+        await asyncio.sleep(0.05)
+        
 @app.post("/chat")
 async def handle_chat(request: ChatRequest):
     # This endpoint receives a JSON question creates a prompt and sends the it to the model for a response.
@@ -55,7 +67,20 @@ async def handle_chat(request: ChatRequest):
     for next_text in client.models.generate_content_stream(model='gemini-2.0-flash-001', 
                                                             contents=prompt):
         model_output += next_text.text
-    return {"answer": model_output}
+    return StreamingResponse(stream_generator(model_output), media_type="text/event-stream")
 
+
+@app.delete("/delete_files")
+async def delete_files(file: DeleteRequest):
+    file_location = f"assets/{file.filename}"
+    print(file_location)
+    if os.path.exists(file_location):
+        os.remove(file_location)
+        db = ChromaDB(GooglePalmEmbeddings())
+        db.deleteEmbeddings(file_location)
+        return {"status": "success", "message": f"{file.filename} deleted."}
+    else:
+        return {"status": "error", "message": "File not found."}
+    
 
 app.mount("/", StaticFiles(directory="frontend", html=True), name="static")

@@ -9,40 +9,43 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Document Summarizer</h1>
-    </header>
-
-    <main class="container">
-        <section class="chatbot-container">
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot-message">
-                    <span>Please upload one or more documents to begin.</span>
-                </div>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Document Summarizer</h2>
             </div>
-            <form class="chat-input-form" id="chatForm">
-                <input type="text" id="userInput" placeholder="Ask a question..." autocomplete="on" required>
-                <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
-            </form>
-        </section>
-
-        <aside class="sidebar-container">
-            <div class="upload-container">
-                <h2><i class="fa-solid fa-file-arrow-up"></i> Upload Documents</h2>
-                <label for="fileInput" class="upload-label">
-                    Choose Files
-                </label>
-                <input type="file" id="fileInput" multiple hidden>
+            <div class="file-panel">
+                <h3>Upload Documents</h3>
+                <div class="drop-zone" id="dropZone">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                    <p>Drag & drop files here, or</p>
+                    <label for="fileInput" class="upload-button">Browse Files</label>
+                    <input type="file" id="fileInput" multiple hidden>
+                </div>
                 <div class="file-list" id="fileList">
                     </div>
             </div>
         </aside>
-    </main>
 
+        <main class="chat-area">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-screen">
+                    <div class="logo">✨</div>
+                    <h3>Hey {user}!</h3>
+                    <p>Upload a document to begin analyzing and chatting.</p>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <form class="chat-input-form" id="chatForm">
+                    <input type="text" id="userInput" placeholder="Ask a question about your document..." autocomplete="off" required>
+                    <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </main>
+    </div>
     <div class="spinner-overlay" id="spinner">
         <div class="spinner"></div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
