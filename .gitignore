@@ -28,6 +28,8 @@ backend/configs.py
 .vscode/
 .idea/
 *.DS_Store
+assets/
+vectorData/
 
 # ===============================================
 # === Build & Distribution Artifacts

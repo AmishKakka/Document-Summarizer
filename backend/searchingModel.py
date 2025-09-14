@@ -1,15 +1,13 @@
 from google import genai
 from pprint import pprint
-API_KEY = "AIzaSyB7AVifNwzd9ppFsq5X7ChTBYA2qod546A"
+import os
 
 # Create a client
-client = genai.Client(api_key=API_KEY)
-        
-# embeddings = client.models.embed_content(
-#             model="models/text-embedding-004", 
-#             contents=["H"])
-# print("Length of embedding vector: ", len(embeddings.embeddings[0].values))
-# print("Embedding vector: ", embeddings.embeddings[0].values)
+client = genai.Client(api_key=os.getenv("API_KEY"))
+
+for m in client.models.list():
+  if 'embedContent' in m.supported_actions:
+    print(m.name, m.display_name, m.description)
 
 # for model in client.models.list():
 #     for action in model.supported_actions:
@@ -17,10 +15,10 @@ client = genai.Client(api_key=API_KEY)
 #             print(model.name, model.display_name, model.description)
 
 
-#  This is a faster way to generate content rather then using 'generate_content_stream'. 
-model_output = ""
-for next_text in client.models.generate_content_stream(model='gemini-2.0-flash-001', 
-                                                            contents='Tell me a story in 100 words.'):
-    model_output += next_text.text
+# #  This is a faster way to generate content rather then using 'generate_content_stream'. 
+# model_output = ""
+# for next_text in client.models.generate_content_stream(model='gemini-2.5-flash-lite', 
+#                                                             contents='Tell me a story in 100 words.'):
+#     model_output += next_text.text
 
-print(model_output)
+# print(model_output)

@@ -1,11 +1,11 @@
 from google import genai
 from google.genai import types
 import langchain_chroma as chromaDB
-import backend.configs
+import os
 
 class GooglePalmEmbeddings:
     def __init__(self):
-        self.client = genai.Client(api_key=backend.configs.API_KEY)
+        self.client = genai.Client(api_key=os.getenv("API_KEY"))
         
     def embed_documents(self, documents):
         embeddings = (self.client.models.embed_content(
@@ -62,9 +62,6 @@ class ChromaDB:
     
 # ======================= Test ============================= #
 # from processDocument import load_file_and_split, createChunkID
-# config.API_KEY = "your_api_key_here"
-
-# config.API_KEY = "your_api_key"
 # # Loading the file and splitting it into chunks
 # split_docs = load_file_and_split(r"./assets/AttentionPaper.pdf")
 # chunks1 = createChunkID(split_docs)

@@ -15,37 +15,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const addMessage = (content, sender) => {
-        // 1. Create the main container (<div class="message user-message" or "bot-message">)
         const messageElement = document.createElement('div');
         messageElement.classList.add('message', `${sender}-message`);
 
-        // 2. Create the avatar
         const avatar = document.createElement('div');
         avatar.classList.add('avatar');
         avatar.innerText = (sender === 'user') ? 'U' : 'S';
 
-        // 3. Create a dedicated WRAPPER for the text content
         const contentWrapper = document.createElement('div');
         contentWrapper.classList.add('message-content');
 
         if (sender === 'bot') {
-            // For the bot, put the received HTML inside the wrapper
             contentWrapper.innerHTML = content;
         } else {
-            // For the user, put plain text inside the wrapper for security
             contentWrapper.innerText = content;
         }
-
-        // 4. Append the avatar and the content wrapper to the main container
-        // Now the flexbox has only TWO children.
         messageElement.appendChild(avatar);
         messageElement.appendChild(contentWrapper);
         
-        // 5. Add the complete message to the chat and scroll
         chatMessages.appendChild(messageElement);
         chatMessages.scrollTop = chatMessages.scrollHeight;
-
-        // Return the main element
         return messageElement;
     };
 
@@ -131,9 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Failed to get a response from the bot.');
             }
 
-            // 1. Create the initial bubble (with avatar and empty content wrapper)
             const botMessageBubble = addMessage('', 'bot');
-            // 2. Find the specific content area inside the bubble we just created
             const botContentWrapper = botMessageBubble.querySelector('.message-content');
             
             const reader = response.body.getReader();
@@ -143,10 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
             while (true) {
                 const { value, done } = await reader.read();
                 if (done) break;
-                
                 fullResponse += decoder.decode(value, {stream: true});
-                
-                // 3. Update the innerHTML of the content wrapper, NOT the whole bubble
                 botContentWrapper.innerHTML = marked.parse(fullResponse);
             }
 

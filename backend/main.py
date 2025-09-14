@@ -6,7 +6,6 @@ import asyncio
 from pydantic import BaseModel
 import os
 from markdown_it import MarkdownIt
-from backend.configs import API_KEY
 from google import genai
 from backend.processDocument import load_file_and_split, createChunkID
 from backend.managePrompts import creatingQuery
@@ -64,9 +63,10 @@ async def stream_generator(response: str):
 async def handle_chat(request: ChatRequest):
     # This endpoint receives a JSON question creates a prompt and sends the it to the model for a response.
     prompt = creatingQuery(request.question)
-    client = genai.Client(api_key=API_KEY)
+    client = genai.Client(api_key=os.getenv("API_KEY"))
+    
     model_output = ""
-    for next_text in client.models.generate_content_stream(model='gemini-2.0-flash-001', 
+    for next_text in client.models.generate_content_stream(model='gemini-2.5-flash-lite', 
                                                             contents=prompt):
         model_output += next_text.text
     html_content = md.render(model_output)

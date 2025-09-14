@@ -36,7 +36,6 @@ def creatingQuery(queryText):
 # ======================= Test ============================= #
 # document = "Amish Kakka Resume.pdf"
 # from processDocument import load_file_and_split, createChunkID
-# from backend.configs import API_KEY
 # import google.genai as genai
 # from fastapi.responses import HTMLResponse
 # from markdown_it import MarkdownIt
@@ -57,9 +56,9 @@ def creatingQuery(queryText):
 # prompt = creatingQuery("Give a summary of the document.")
 # print("Response:", prompt)
 # model_output = ""
-# client = genai.Client(api_key=API_KEY)
+# client = genai.Client(api_key=os.getenv("API_KEY"))
 
-# for next_text in client.models.generate_content_stream(model='gemini-2.0-flash-001', 
+# for next_text in client.models.generate_content_stream(model='gemini-2.5-flash-lite', 
 #                                                             contents=prompt):
 #     model_output += next_text.text
 
