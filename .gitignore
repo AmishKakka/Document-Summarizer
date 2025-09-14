@@ -1,5 +1,37 @@
-backend/configs.py
+# ===============================================
+# === Python Virtual Environments
+# ===============================================
 DocENV/
-DS_Store/
-backend/__pycache__/
-.dockerignore
+venv/
+env/
+.venv/
+.env/
+
+# ===============================================
+# === Python Cache & Compiled Files
+# ===============================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ===============================================
+# === Specific Files & Folders to Ignore
+# ===============================================
+# Your specific config file
+backend/configs.py
+.env
+
+# ===============================================
+# === IDE & Editor Folders
+# ===============================================
+.vscode/
+.idea/
+*.DS_Store
+
+# ===============================================
+# === Build & Distribution Artifacts
+# ===============================================
+build/
+dist/
+*.egg-info/

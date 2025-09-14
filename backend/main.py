@@ -1,10 +1,11 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, HTMLResponse
 import asyncio
 from pydantic import BaseModel
 import os
+from markdown_it import MarkdownIt
 from backend.configs import API_KEY
 from google import genai
 from backend.processDocument import load_file_and_split, createChunkID
@@ -12,6 +13,7 @@ from backend.managePrompts import creatingQuery
 from backend.populateDatabase import ChromaDB, GooglePalmEmbeddings
 
 app = FastAPI()
+md = MarkdownIt()
 origins = [
     "https://www.my-summarizer-app.com",
     "https://my-summarizer-app.com",
@@ -67,8 +69,8 @@ async def handle_chat(request: ChatRequest):
     for next_text in client.models.generate_content_stream(model='gemini-2.0-flash-001', 
                                                             contents=prompt):
         model_output += next_text.text
-    return StreamingResponse(stream_generator(model_output), media_type="text/event-stream")
-
+    html_content = md.render(model_output)
+    return HTMLResponse(content=html_content)
 
 @app.delete("/delete_files")
 async def delete_files(file: DeleteRequest):

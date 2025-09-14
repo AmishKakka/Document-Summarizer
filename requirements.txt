@@ -7,3 +7,4 @@ uvicorn
 fastapi
 pydantic
 python-multipart
+markdown-it-py

@@ -1,6 +1,6 @@
 from google import genai
 from pprint import pprint
-API_KEY = "your_api_key"
+API_KEY = "AIzaSyB7AVifNwzd9ppFsq5X7ChTBYA2qod546A"
 
 # Create a client
 client = genai.Client(api_key=API_KEY)
@@ -18,6 +18,9 @@ client = genai.Client(api_key=API_KEY)
 
 
 #  This is a faster way to generate content rather then using 'generate_content_stream'. 
-chunk = client.models.generate_content(model='gemini-2.0-flash-001', contents='Tell me a story in 100 words.')
-print(chunk.candidates[0].content.parts[0].text)
+model_output = ""
+for next_text in client.models.generate_content_stream(model='gemini-2.0-flash-001', 
+                                                            contents='Tell me a story in 100 words.'):
+    model_output += next_text.text
 
+print(model_output)
