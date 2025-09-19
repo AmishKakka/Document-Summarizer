@@ -11,6 +11,15 @@
 <body>
     <div class="app-layout">
         <aside class="sidebar">
+            <div class="user-panel">
+                <button id="loginBtn">
+                    <i class="fab fa-google"></i>   Sign in with Google
+                </button>
+                <div id="userInfo" style="display: none;">
+                    <p id="userName"></p>
+                    <button id="logoutBtn">Sign Out</button>
+                </div>
+            </div>
             <div class="sidebar-header">
                 <h2>Document Summarizer</h2>
             </div>
@@ -23,7 +32,7 @@
                     <input type="file" id="fileInput" multiple hidden>
                 </div>
                 <div class="file-list" id="fileList">
-                    </div>
+                </div>
             </div>
         </aside>
 
@@ -31,7 +40,7 @@
             <div class="chat-messages" id="chatMessages">
                 <div class="welcome-screen">
                     <div class="logo">✨</div>
-                    <h3>Hey {user}</h3>
+                    <h2 class="UserName" id="UserName"> Hey {user}</h2>
                     <p>Upload a document to begin analyzing and chatting.</p>
                 </div>
             </div>
@@ -46,6 +55,8 @@
     <div class="spinner-overlay" id="spinner">
         <div class="spinner"></div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,9 +1,6 @@
 /* Import Google Font */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
-/* =============================================== */
-/* === 1. THEME VARIABLES & CSS RESET          === */
-/* =============================================== */
 :root {
     --bg-color: #1E1F22;
     --sidebar-bg: #2B2D31;
@@ -26,11 +23,11 @@ body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
-    overflow: hidden; /* Prevent body scroll */
+    overflow: hidden;
 }
 
 /* =============================================== */
-/* === 2. MAIN APP LAYOUT                      === */
+/* ===    MAIN APP LAYOUT                      === */
 /* =============================================== */
 .app-layout {
     display: flex;
@@ -56,8 +53,52 @@ body {
 }
 
 /* =============================================== */
-/* === 3. SIDEBAR COMPONENTS                   === */
+/* ===    SIDEBAR COMPONENTS                   === */
 /* =============================================== */
+.user-panel {
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#loginBtn, #logoutBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    gap: 8px;
+    
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background-color: var(--accent-color); 
+    color: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#loginBtn i {
+    font-size: 1.2rem;
+}
+
+#userInfo p {
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+#logoutBtn {
+    background-color: var(--hover-bg);
+    color: var(--text-color);
+}
+
+#logoutBtn:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
+
 .sidebar-header h2 {
     font-size: 1.2rem;
     padding-bottom: 10px;
@@ -134,7 +175,7 @@ body {
 }
 
 /* =============================================== */
-/* === 4. CHAT AREA COMPONENTS                 === */
+/* ===    CHAT AREA COMPONENTS                 === */
 /* =============================================== */
 .chat-messages {
     flex-grow: 1;
@@ -168,7 +209,9 @@ body {
     text-align: center;
 }
 .welcome-screen .logo { font-size: 3rem; margin-bottom: 1rem; }
-.welcome-screen h3 { color: var(--text-color); margin-bottom: 0.5rem; }
+.welcome-screen h2 { color: var(--accent-color); margin-bottom: 0.5rem; }
+
+.welcome-screen .UserName { color: var(--accent-color); margin-bottom: 1.5rem; }
 
 .chat-input-container { padding: 20px; }
 .chat-input-form {
@@ -207,7 +250,7 @@ body {
 }
 
 /* =============================================== */
-/* === 5. CHAT BUBBLE STYLING                  === */
+/* ===    CHAT BUBBLE STYLING                  === */
 /* =============================================== */
 .message {
     display: flex;
@@ -257,7 +300,7 @@ body {
 .bot-message li { margin-bottom: 0.25em; }
 
 /* =============================================== */
-/* === 6. RESPONSIVE DESIGN (FOR SMALL SCREENS) === */
+/* ===   RESPONSIVE DESIGN (FOR SMALL SCREENS) === */
 /* =============================================== */
 @media (max-width: 768px) {
     .app-layout {
