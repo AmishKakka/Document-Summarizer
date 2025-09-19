@@ -1,10 +1,12 @@
 langchain
 langchain-community
 langchain-google-genai
-langchain-chroma
+langchain-pinecone
 google-genai
 uvicorn
 fastapi
 pydantic
 python-multipart
 markdown-it-py
+firebase-admin
+pypdf

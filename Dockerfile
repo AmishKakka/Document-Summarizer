@@ -11,8 +11,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY ./backend /app/backend
 COPY ./frontend /app/frontend
 
-# Expose the port the app will run on
 EXPOSE 8080
 
-# '$PORT' is automatically supplied by services like Cloud Run
 CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8080"]
