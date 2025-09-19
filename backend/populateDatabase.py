@@ -1,15 +1,17 @@
 from google import genai
 from google.genai import types
-import langchain_chroma as chromaDB
+from langchain_pinecone import PineconeVectorStore
+from langchain_core.documents import Document
 import os
 
 class GooglePalmEmbeddings:
     def __init__(self):
-        self.client = genai.Client(api_key=os.getenv("API_KEY"))
+        # Replace with your actual API key from Google Cloud Credentials
+        self.client = genai.Client(api_key="your-google-api-key") 
         
     def embed_documents(self, documents):
         embeddings = (self.client.models.embed_content(
-                model="models/text-embedding-004", 
+                model="models/text-embedding-004",  # or "models/text-embedding-003"
                 contents=documents,
                 config=types.EmbedContentConfig(task_type='retrieval_document')))
         return [e.values for e in embeddings.embeddings]
@@ -22,66 +24,63 @@ class GooglePalmEmbeddings:
         return embeddings.embeddings[0].values
 
 
-class ChromaDB:
+class VectorDB:
     def __init__(self, embeddingFunction):
-        self.vector_db = chromaDB.Chroma(persist_directory=f'./vectorData', 
-                                embedding_function=embeddingFunction)
+        self.vector_db = PineconeVectorStore(index_name="document-summarizer", 
+                                             embedding=embeddingFunction,
+                                             pinecone_api_key="your-pinecone-api-key"
+                                             )
+        # print(self.vector_db)
 
-    def addEmbeddings_to_Chroma(self, chunks):
-        doc_name = chunks[0].metadata.get("source")
-        existing_items = self.vector_db.get(include=[])
-        existing_ids = set(existing_items["ids"])
-        print(f"Number of existing documents in DB: {len(existing_ids)}")
-        print("Adding embeddings to ChromaDB collection for : ", doc_name)
-        
-        new_chunks = []
-        for chunk in chunks:
-            if chunk.metadata["id"] not in existing_ids:
-                new_chunks.append(chunk)
-        if len(new_chunks) != 0:
-            chunk_ids = [chunk.metadata["id"] for chunk in new_chunks]
-            self.vector_db.add_documents(new_chunks, ids=chunk_ids)
-            print(f"Added {len(new_chunks)} new documents.")
-            print("Added embeddings to ChromaDB.")
-        else:
-            print("No new documents to add.")
-            
-    def observeDB(self):
-        print("Document IDs of embeddings in database: ", self.vector_db.get(include=[])["ids"])
-        
-    def deleteEmbeddings(self, filename):
-        ids = self.vector_db.get(include=[])["ids"]
-        if ids is None or len(ids) == 0:
-            print("No documents in ChromaDB to delete.")
-            return
-        to_delete = [id for id in ids if filename in id]
-        self.vector_db.delete(to_delete)
-        print(f"Deleted {filename} embeddings from ChromaDB.")
-        print(self.vector_db.get(include=[])["ids"])
+    def addEmbeddings(self, docs: list[Document], uid: str, file_id: str):
+        for doc in docs:
+            doc.metadata = {
+                "user_id": uid,
+                "file_id": file_id}        
+        self.vector_db.add_documents(docs)
+        print(f"Added {len(docs)} embeddings for file_id: {file_id}")
+               
+    def deleteEmbeddings(self, uid: str, file_id: str):
+        self.vector_db.index.delete(
+            filter={
+                "user_id": uid,
+                "file_id": file_id
+            }
+        )
+        print(f"Deleted embeddings for file_id: {file_id}")
+    
+    def query(self, question: str, uid: str) -> list[Document]:
+        relevant_docs = self.vector_db.similarity_search(
+            query=question,
+            k=7,
+            filter={"user_id": uid}
+        )
+        print(f"Found {len(relevant_docs)} relevant documents.")
+        return relevant_docs
     
     
 # ======================= Test ============================= #
 # from processDocument import load_file_and_split, createChunkID
-# # Loading the file and splitting it into chunks
+# Loading the file and splitting it into chunks
 # split_docs = load_file_and_split(r"./assets/AttentionPaper.pdf")
 # chunks1 = createChunkID(split_docs)
 
-# split_docs = load_file_and_split(r"./assets/Cover letter.pdf")
+# split_docs = load_file_and_split(r"./assets/document.pdf")
 # chunks2 = createChunkID(split_docs)
 
-# chunks = chunks1 + chunks2
-# print("Number of chunks: \n", len(chunks))
-# # print(chunks[0])
+# chunks = chunks2
+# print("Number of chunks: \t", len(chunks))
+# print(chunks[0])
 
-# # Creating the embeddings and adding them to the ChromaDB
-# db = ChromaDB(GooglePalmEmbeddings())
+# Creating the embeddings and adding them to the vector db
+# db = VectorDB(GooglePalmEmbeddings())
 
-# for i in range(0, len(chunks), 100):
-#     # print(f"Adding chunks {i} to {i+99}")
-#     db.addEmbeddings_to_Chroma(chunks[i:i+100])
+# db.addEmbeddings(chunks, uid="user1", file_id="document.pdf")
 
-# db.observeDB()
+# db.deleteEmbeddings(uid="user1", file_id="document.pdf")
 
-# db.deleteEmbeddings("AttentionPaper.pdf")
-# db.deleteEmbeddings("Cover letter.pdf")
-# db.observeDB()
+# results = db.query("What is the purpose of this document?", user_id="user1")
+# print("Number of relevant documents: \t", len(results))
+# for doc in results:
+#     print(doc.metadata['user_id'], ":\t", doc.page_content)
+# ========================================================== #

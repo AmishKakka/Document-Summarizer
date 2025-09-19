@@ -34,7 +34,10 @@ def createChunkID(chunks):
 
 
 # ======================= Test ============================= #
-# split_docs = load_file(r"./assets/name_of_the_document.pdf")
+# split_docs = load_file_and_split(r"./assets/document.pdf")
 # content = [doc.page_content for doc in split_docs]
 
+# chunks = createChunkID(split_docs)
+# pprint([chunk.metadata['id'] for chunk in chunks])
+# print([chunk.page_content for chunk in chunks])
 # ========================================================== #
