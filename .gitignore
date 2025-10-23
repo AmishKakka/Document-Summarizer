@@ -21,6 +21,7 @@ __pycache__/
 # Your specific config file
 backend/configs.py
 .env
+changes.txt
 
 # ===============================================
 # === IDE & Editor Folders
