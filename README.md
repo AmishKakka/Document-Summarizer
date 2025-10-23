@@ -26,12 +26,12 @@ source env_name/bin/activate
 pip install -r requirements.txt
 ```
 
-3. Run main.py to access the application in your browser. 
+3. Run the command below to access the application in your browser locally. 
 ```sh
-python3 main.py
+uvicorn backend.main:app --reload
 ```
 
 # **Pointers** 
 1. The idea is to implement the concept Retreival-Augmented Generation (RAG) and the power of LLMs to generate relevant text.
-2. To store the embeddings of the documents, ChromaDB is used and accessed using the LangChain library.
+2. To store the embeddings of the documents, Pinecone is used and accessed using the LangChain library.
 3. You can now upload mutiple documents at a time and query any document.
