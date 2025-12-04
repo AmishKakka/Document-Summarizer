@@ -297,7 +297,6 @@ body {
     background-color: #7a86a3;
 }
 
-/* --- Markdown Content within Bot Messages --- */
 .bot-message * + * { margin-top: 0.75em; }
 .bot-message p { margin: 0; }
 .bot-message strong { font-weight: 600; color: #a5c8ff; }
