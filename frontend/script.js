@@ -109,13 +109,14 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             if (user) {
                 const token = await user.getIdToken();
-                
+                console.log(token);
                 const response = await fetch(`/upload`, {
                     method: 'POST',
                     headers: {'Authorization': `Bearer ${token}`},
                     body: formData,
                 });
-
+                
+                console.log(response);
                 if (!response.ok) {
                     throw new Error('File upload failed.');
                 }
@@ -195,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (done) break;
                 fullResponse += decoder.decode(value, {stream: true});
                 botContentWrapper.innerHTML = marked.parse(fullResponse);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
             }
 
         } catch (error) {

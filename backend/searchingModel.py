@@ -1,13 +1,12 @@
 from google import genai
 from pprint import pprint
-import os
 
 # Create a client
-client = genai.Client(api_key=os.getenv("API_KEY"))
+client = genai.Client(api_key="your_api_key")
 
 for m in client.models.list():
   if 'embedContent' in m.supported_actions:
-    print(m.name, m.display_name, m.description)
+    print(m.name, m.display_name, m.description, m.model_dump_json(), "\n")
 
 # for model in client.models.list():
 #     for action in model.supported_actions:

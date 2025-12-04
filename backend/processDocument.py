@@ -1,5 +1,9 @@
+'''
+This module handles loading and splitting PDF documents into chunks, 
+and assigning unique IDs to each chunk based on their source and page number.
+'''
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from pprint import pprint
 
 def load_file_and_split(file_name):

@@ -1,24 +1,28 @@
+'''
+This module handles the creation and management of a vector database using Google Palm Embeddings
+and Pinecone for storing and querying document embeddings.
+'''
 from google import genai
 from google.genai import types
 from langchain_pinecone import PineconeVectorStore
 from langchain_core.documents import Document
-import os
+
 
 class GooglePalmEmbeddings:
     def __init__(self):
         # Replace with your actual API key from Google Cloud Credentials
-        self.client = genai.Client(api_key="your-google-api-key") 
+        self.client = genai.Client(api_key="your_api_key") 
         
     def embed_documents(self, documents):
         embeddings = (self.client.models.embed_content(
-                model="models/text-embedding-004",  # or "models/text-embedding-003"
+                model="models/gemini-embedding-001",
                 contents=documents,
                 config=types.EmbedContentConfig(task_type='retrieval_document')))
         return [e.values for e in embeddings.embeddings]
         
     def embed_query(self, text):
         embeddings = self.client.models.embed_content(
-            model="models/text-embedding-004", 
+            model="models/gemini-embedding-001", 
             contents=text,
             config=types.EmbedContentConfig(task_type='retrieval_query'))
         return embeddings.embeddings[0].values
@@ -26,11 +30,11 @@ class GooglePalmEmbeddings:
 
 class VectorDB:
     def __init__(self, embeddingFunction):
-        self.vector_db = PineconeVectorStore(index_name="document-summarizer", 
+        self.vector_db = PineconeVectorStore(index_name="your_pinecone_index_name",
                                              embedding=embeddingFunction,
-                                             pinecone_api_key="your-pinecone-api-key"
+                                             pinecone_api_key="your_pinecone_api_key"
                                              )
-        # print(self.vector_db)
+        print(self.vector_db)
 
     def addEmbeddings(self, docs: list[Document], uid: str, file_id: str):
         for doc in docs:

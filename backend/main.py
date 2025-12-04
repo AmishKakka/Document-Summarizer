@@ -21,11 +21,16 @@ from backend.managePrompts import creatingQuery
 # ------------------ Initialization of all variables and services ------------------ #
 app = FastAPI()
 md = MarkdownIt()
+
 # This path should point to the mounted secret in the Cloud Run service
 SECRET_MOUNT_PATH = "/path/to/service-account-key.json"  
 storage_client = storage.Client()
-firestore_db = firestore.Client(database="database-name")  # Ensure this matches your Firestore database name
-BUCKET_NAME = "bucket-name"  # Ensure this matches your GCS bucket name
+#  Ensure this matches your Google Cloud project ID
+project_id = "your-gcp-project-id" 
+#  Ensure this matches your Firestore database name
+firestore_db = firestore.Client(database="your-firestore-database-name")  
+#  Ensure this matches your GCS bucket name
+BUCKET_NAME = "your-gcs-bucket-name" 
 VECTOR_DB = VectorDB(GooglePalmEmbeddings())
 
 if os.path.exists(SECRET_MOUNT_PATH):
@@ -36,7 +41,6 @@ else:
     cred = credentials.ApplicationDefault()
 
 # Initialize the Firebase app with the determined credentials
-project_id = os.getenv("PROJECT_ID")
 firebase_admin.initialize_app(cred)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app.add_middleware(
@@ -120,13 +124,13 @@ async def stream_generator(response: str):
     for word in response.split():
         yield word + " "
         await asyncio.sleep(0.05)
-        
+
 @app.post("/chat")
 async def handle_chat(request: ChatRequest, user: dict = Depends(get_current_user)):
     # This endpoint receives a JSON question creates a prompt and sends the it to the model for a response.
     similar_content = VECTOR_DB.query(request.question, uid=user['uid'])
     prompt = creatingQuery(request.question, similar_content)
-    client = genai.Client(api_key="your-api-key")  # Replace with your actual API key from Google Cloud Credentials
+    client = genai.Client(api_key="your_api_key")  # Replace with your actual API key from Google Cloud Credentials
     
     model_output = ""
     for next_text in client.models.generate_content_stream(model='gemini-2.5-flash-lite', 
@@ -178,4 +182,4 @@ async def delete_files(file: DeleteRequest, user: dict = Depends(get_current_use
 
 
 # =================== Serve Frontend ================== #
-app.mount("/", StaticFiles(directory="frontend", html=True), name="static")
+app.mount("/", StaticFiles(directory="frontend", html=True), name="static") 
