@@ -23,14 +23,14 @@ app = FastAPI()
 md = MarkdownIt()
 
 # This path should point to the mounted secret in the Cloud Run service
-SECRET_MOUNT_PATH = "/path/to/service-account-key.json"  
+SECRET_MOUNT_PATH = "/app/secrets/service-account-key.json"  
 storage_client = storage.Client()
 #  Ensure this matches your Google Cloud project ID
-project_id = "your-gcp-project-id" 
+project_id = "document-summarizer-472019" 
 #  Ensure this matches your Firestore database name
-firestore_db = firestore.Client(database="your-firestore-database-name")  
+firestore_db = firestore.Client(database="user-data-store")  
 #  Ensure this matches your GCS bucket name
-BUCKET_NAME = "your-gcs-bucket-name" 
+BUCKET_NAME = "document-summarizer-472019-upload" 
 VECTOR_DB = VectorDB(GooglePalmEmbeddings())
 
 if os.path.exists(SECRET_MOUNT_PATH):
@@ -45,7 +45,7 @@ firebase_admin.initialize_app(cred)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], # For frontend server 
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], # For the frontend server
     allow_credentials=True,
     allow_methods=["*"], # Allows all methods (GET, POST, etc.)
     allow_headers=["*"],
@@ -130,7 +130,7 @@ async def handle_chat(request: ChatRequest, user: dict = Depends(get_current_use
     # This endpoint receives a JSON question creates a prompt and sends the it to the model for a response.
     similar_content = VECTOR_DB.query(request.question, uid=user['uid'])
     prompt = creatingQuery(request.question, similar_content)
-    client = genai.Client(api_key="your_api_key")  # Replace with your actual API key from Google Cloud Credentials
+    client = genai.Client(api_key="AIzaSyBhr48MqeZ4gp1y1PsuGr_89NO-4LOZ-_c")  # Replace with your actual API key from Google Cloud Credentials
     
     model_output = ""
     for next_text in client.models.generate_content_stream(model='gemini-2.5-flash-lite', 

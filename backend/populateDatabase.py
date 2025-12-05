@@ -11,7 +11,7 @@ from langchain_core.documents import Document
 class GooglePalmEmbeddings:
     def __init__(self):
         # Replace with your actual API key from Google Cloud Credentials
-        self.client = genai.Client(api_key="your_api_key") 
+        self.client = genai.Client(api_key="AIzaSyBhr48MqeZ4gp1y1PsuGr_89NO-4LOZ-_c") 
         
     def embed_documents(self, documents):
         embeddings = (self.client.models.embed_content(
@@ -30,9 +30,10 @@ class GooglePalmEmbeddings:
 
 class VectorDB:
     def __init__(self, embeddingFunction):
-        self.vector_db = PineconeVectorStore(index_name="your_pinecone_index_name",
-                                             embedding=embeddingFunction,
-                                             pinecone_api_key="your_pinecone_api_key")
+        self.vector_db = PineconeVectorStore(index_name="query-index",
+                                            embedding=embeddingFunction,
+                                            pinecone_api_key="pcsk_5hTwCq_KrQsMs4nbepit1JT3cnJx735U3hKFKLxrDTmSiAZ7jbs9kP9bM7JxX7E2YjG5NC"
+                                            )
         # print(self.vector_db)
 
     def addEmbeddings(self, docs: list[Document], uid: str, file_id: str):
