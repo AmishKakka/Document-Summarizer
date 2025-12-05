@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 import asyncio
 from pydantic import BaseModel
 import os
@@ -23,14 +23,14 @@ app = FastAPI()
 md = MarkdownIt()
 
 # This path should point to the mounted secret in the Cloud Run service
-SECRET_MOUNT_PATH = "/app/secrets/service-account-key.json"  
+SECRET_MOUNT_PATH = "/path/to/service-account-key.json"  
 storage_client = storage.Client()
 #  Ensure this matches your Google Cloud project ID
-project_id = "document-summarizer-472019" 
+project_id = "your-gcp-project-id" 
 #  Ensure this matches your Firestore database name
-firestore_db = firestore.Client(database="user-data-store")  
+firestore_db = firestore.Client(database="your-firestore-database-name")  
 #  Ensure this matches your GCS bucket name
-BUCKET_NAME = "document-summarizer-472019-upload" 
+BUCKET_NAME = "your-gcs-bucket-name" 
 VECTOR_DB = VectorDB(GooglePalmEmbeddings())
 
 if os.path.exists(SECRET_MOUNT_PATH):
@@ -45,7 +45,7 @@ firebase_admin.initialize_app(cred)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], # For the frontend server
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     allow_credentials=True,
     allow_methods=["*"], # Allows all methods (GET, POST, etc.)
     allow_headers=["*"],
@@ -130,7 +130,7 @@ async def handle_chat(request: ChatRequest, user: dict = Depends(get_current_use
     # This endpoint receives a JSON question creates a prompt and sends the it to the model for a response.
     similar_content = VECTOR_DB.query(request.question, uid=user['uid'])
     prompt = creatingQuery(request.question, similar_content)
-    client = genai.Client(api_key="AIzaSyBhr48MqeZ4gp1y1PsuGr_89NO-4LOZ-_c")  # Replace with your actual API key from Google Cloud Credentials
+    client = genai.Client(api_key="your-google-cloud-api-key")  # Replace with your actual API key from Google Cloud Credentials
     
     model_output = ""
     for next_text in client.models.generate_content_stream(model='gemini-2.5-flash-lite', 
@@ -184,7 +184,6 @@ async def delete_files(file: DeleteRequest, user: dict = Depends(get_current_use
 # =================== Serve Frontend ================== #
 if os.path.exists("../frontend/dist"):
     app.mount("/", StaticFiles(directory="../frontend/dist", html=True), name="static")
-
 @app.get("/{full_path:path}")
 async def serve_vue_app(full_path: str):
     file_path = f"frontend/dist/{full_path}"
