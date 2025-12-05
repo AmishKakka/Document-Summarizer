@@ -32,9 +32,8 @@ class VectorDB:
     def __init__(self, embeddingFunction):
         self.vector_db = PineconeVectorStore(index_name="your_pinecone_index_name",
                                              embedding=embeddingFunction,
-                                             pinecone_api_key="your_pinecone_api_key"
-                                             )
-        print(self.vector_db)
+                                             pinecone_api_key="your_pinecone_api_key")
+        # print(self.vector_db)
 
     def addEmbeddings(self, docs: list[Document], uid: str, file_id: str):
         for doc in docs:

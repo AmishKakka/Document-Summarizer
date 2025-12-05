@@ -1,3 +1,16 @@
-__pycache__/
-DocENV/
+# Ignore dependency folders
+**/node_modules
+
+# Ignore build artifacts
+**/dist
+frontend/dist
+
+# Ignore system/IDE files
+.git
+.DS_Store
+.vscode
+__pycache__
 *.pyc
+
+# Ignore local environment variables
+.env

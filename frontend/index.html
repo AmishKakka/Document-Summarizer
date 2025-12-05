@@ -1,62 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document Summarizer</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-</head>
-<body>
-    <div class="app-layout">
-        <aside class="sidebar">
-            <div class="user-panel">
-                <button id="loginBtn">
-                    <i class="fab fa-google"></i>   Sign in with Google
-                </button>
-                <div id="userInfo" style="display: none;">
-                    <p id="userName"></p>
-                    <button id="logoutBtn">Sign Out</button>
-                </div>
-            </div>
-            <div class="sidebar-header">
-                <h2>Document Summarizer</h2>
-            </div>
-            <div class="file-panel">
-                <h3>Upload Documents</h3>
-                <div class="drop-zone" id="dropZone">
-                    <i class="fa-solid fa-file-arrow-up"></i>
-                    <p>Drag & drop files here, or</p>
-                    <label for="fileInput" class="upload-button">Browse Files</label>
-                    <input type="file" id="fileInput" multiple hidden>
-                </div>
-                <div class="file-list" id="fileList">
-                </div>
-            </div>
-        </aside>
-
-        <main class="chat-area">
-            <div class="chat-messages" id="chatMessages">
-                <div class="welcome-screen">
-                    <div class="logo">✨</div>
-                    <h2 class="UserName" id="UserName"> Hey {user}</h2>
-                    <p>Upload a document to begin analyzing and chatting.</p>
-                </div>
-            </div>
-            <div class="chat-input-container">
-                <form class="chat-input-form" id="chatForm">
-                    <input type="text" id="userInput" placeholder="Ask a question about your document..." autocomplete="off" required>
-                    <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
-                </form>
-            </div>
-        </main>
-    </div>
-    <div class="spinner-overlay" id="spinner">
-        <div class="spinner"></div>
-    </div>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="script.js"></script>
-</body>
+  </head>
+  <body>
+    <div id="app"></div> <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

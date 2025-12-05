@@ -2,7 +2,7 @@ from fastapi import FastAPI, UploadFile, File, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import StreamingResponse
+from fastapi.responses import FileResponse, StreamingResponse
 import asyncio
 from pydantic import BaseModel
 import os
@@ -45,10 +45,10 @@ firebase_admin.initialize_app(cred)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Must replace this later when pushing this application to public use by the websites's URL in Google Cloud
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"], # For frontend server 
     allow_credentials=True,
     allow_methods=["*"], # Allows all methods (GET, POST, etc.)
-    allow_headers=["*"], # Allows all headers
+    allow_headers=["*"],
 )
 
 
@@ -182,4 +182,15 @@ async def delete_files(file: DeleteRequest, user: dict = Depends(get_current_use
 
 
 # =================== Serve Frontend ================== #
-app.mount("/", StaticFiles(directory="frontend", html=True), name="static") 
+if os.path.exists("../frontend/dist"):
+    app.mount("/", StaticFiles(directory="../frontend/dist", html=True), name="static")
+
+@app.get("/{full_path:path}")
+async def serve_vue_app(full_path: str):
+    file_path = f"frontend/dist/{full_path}"
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        return FileResponse(file_path)
+        
+    if os.path.exists("frontend/dist/index.html"):
+        return FileResponse("frontend/dist/index.html")
+    return {"error": "Frontend not built. Run 'npm run build'"}
